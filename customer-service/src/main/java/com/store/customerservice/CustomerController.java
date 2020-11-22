@@ -13,9 +13,16 @@ public class CustomerController {
     private List<Customer> customers = Arrays.asList(
             new Customer(1, "Joe Bloggs"),
             new Customer(2, "Jane Doe"));
+
+    private OrderClient orderClient;
+
+    public CustomerController(OrderClient orderClient) {
+        this.orderClient = orderClient;
+    }
     
     @GetMapping
     public List<Customer> getAllCustomers() {
+    	//http://localhost:3001/
         return customers;
     }
     
@@ -26,4 +33,10 @@ public class CustomerController {
                         .findFirst()
                         .orElseThrow(IllegalArgumentException::new);
     }
+    
+    @GetMapping("/{id}/orders")
+    //http://localhost:3001/2/orders
+    public Object getOrdersForCustomer(@PathVariable int id) {
+        return orderClient.getOrdersForCustomer(id);
+    }    
 }
